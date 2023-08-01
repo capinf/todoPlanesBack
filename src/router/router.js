@@ -148,6 +148,20 @@ router.put('/resetpassword/:id', (req, res)=>{
 
     
 });
+
+//// Conexión Correcta ////
+
+router.get('/', (req, res)=>{
+
+    const ok = {
+        estado: 'Backend Conectado',
+        mensaje: 'Bienvenido, todo está bien !!!'
+    }
+    res.json(ok);
+});
+
+
+
 //// Usuarios ////
 
 router.get('/usuarios', (req, res)=>{
