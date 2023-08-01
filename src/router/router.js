@@ -148,20 +148,6 @@ router.put('/resetpassword/:id', (req, res)=>{
 
     
 });
-
-//// Conexión Correcta ////
-
-router.get('/', (req, res)=>{
-
-    const ok = {
-        estado: 'Backend Conectado',
-        mensaje: 'Bienvenido, todo está bien !!!'
-    }
-    res.json(ok);
-});
-
-
-
 //// Usuarios ////
 
 router.get('/usuarios', (req, res)=>{
@@ -219,7 +205,7 @@ router.put('/altausuario/:id', (req, res)=>{
 router.put('/edit_usuario/:id',(req, res)=>{
   
             let id = req.params.id;
-            const { rol } =req.body  
+            const rol =req.body.rol
             console.log(req.body)
             mysqlConeccion.query(`UPDATE usuarios SET rol='${rol}' WHERE id='${id}'`, (err, registros)=>{
                 if(!err){
