@@ -1,3 +1,4 @@
 node_modules
 .env
 src/router/router_back.js
+src/database/databaseBack.js
