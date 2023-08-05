@@ -12,9 +12,7 @@ const morgan =require('morgan');
 //configuraciones
 app.set('puerto' , process.env.PORT || 3000);
 // middlewares
-app.use(cors());
 app.use(morgan('dev'));
-app.use('/uploads', express.static('src/uploads'));
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -33,6 +31,17 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '../uploads/');
+      },
+      filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+      }
+  });
+  
+  const upload = multer({ storage }).single('imgPath');
 
 //  rutas para mi aplicacion
 app.use(require('./router/router'))

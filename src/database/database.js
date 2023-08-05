@@ -16,4 +16,3 @@ const mysqlConeccion = mysql.createPool({
 
 // Export the connection pool
 module.exports = mysqlConeccion;
-// Cambios para la nueva compilación
