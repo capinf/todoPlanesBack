@@ -23,7 +23,7 @@ const mysqlConeccion = require('../database/database');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads');
+        cb(null, 'src/uploads');
       },
       filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
@@ -148,20 +148,6 @@ router.put('/resetpassword/:id', (req, res)=>{
 
     
 });
-
-//// Conexión Correcta ////
-
-router.get('/', (req, res)=>{
-
-    const ok = {
-        estado: 'Backend Conectado',
-        mensaje: 'Bienvenido, todo está bien !!!'
-    }
-    res.json(ok);
-});
-
-
-
 //// Usuarios ////
 
 router.get('/usuarios', (req, res)=>{
@@ -219,7 +205,7 @@ router.put('/altausuario/:id', (req, res)=>{
 router.put('/edit_usuario/:id',(req, res)=>{
   
             let id = req.params.id;
-            const { rol } =req.body  
+            const rol =req.body.rol
             console.log(req.body)
             mysqlConeccion.query(`UPDATE usuarios SET rol='${rol}' WHERE id='${id}'`, (err, registros)=>{
                 if(!err){
@@ -241,7 +227,7 @@ router.put('/edit_usuario/:id',(req, res)=>{
         console.log('console log en router js req body: ', req.body);
         console.log('console log en router js req body: ', req.file)
         const { nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, rolform } = req.body
-        const imgPath = req.file ? req.file.path : '';
+        const imgPath = req.file ? `uploads/${req.file.filename}` : 'img/imgDefault.png';
         console.log('el img path es ', imgPath)
     
                 let query=`INSERT INTO formulario (nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, imgPath, rolform, fecha) 
