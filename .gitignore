@@ -1,5 +1,4 @@
 node_modules
 .env
-package-lock.json
 src/router/router_back.js
 src/database/databaseBack.js
