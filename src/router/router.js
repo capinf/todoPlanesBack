@@ -23,7 +23,7 @@ const mysqlConeccion = require('../database/database');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/uploads');
+        cb(null, 'public/uploads');
       },
       filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
