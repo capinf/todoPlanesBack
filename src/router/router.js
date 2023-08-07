@@ -23,7 +23,7 @@ const mysqlConeccion = require('../database/database');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/uploads');
+        cb(null, 'src/uploads');
       },
       filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
@@ -241,7 +241,7 @@ router.put('/edit_usuario/:id',(req, res)=>{
         console.log('console log en router js req body: ', req.body);
         console.log('console log en router js req body: ', req.file)
         const { nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, rolform } = req.body
-        const imgPath = req.file ? `https://todoplanesback.onrender.com/uploads/${req.file.filename}` : 'img/imgDefault.png';
+        const imgPath = req.file ? `uploads/${req.file.filename}` : 'img/imgDefault.png';
         console.log('el img path es ', imgPath)
     
                 let query=`INSERT INTO formulario (nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, imgPath, rolform, fecha) 
