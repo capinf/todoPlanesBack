@@ -13,6 +13,7 @@ const morgan =require('morgan');
 app.set('puerto' , process.env.PORT || 3000);
 // middlewares
 app.use(cors());
+app.use('/uploads', express.static('src/uploads'));
 app.use(morgan('dev'));
 app.use(function (req, res, next) {
 
