@@ -12,6 +12,8 @@ const morgan =require('morgan');
 //configuraciones
 app.set('puerto' , process.env.PORT || 3000);
 // middlewares
+app.use(cors());
+
 app.use(morgan('dev'));
 app.use(function (req, res, next) {
 
@@ -32,19 +34,9 @@ app.use(function (req, res, next) {
     next();
 });
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '../uploads/');
-      },
-      filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-      }
-  });
-  
-  const upload = multer({ storage }).single('imgPath');
-
 //  rutas para mi aplicacion
 app.use(require('./router/router'))
+app.use('/uploads', express.static('src/uploads'));
 // inicia el servidor NODE
 app.listen(app.get('puerto'), ()=>{
     console.log('El servidor corriendo en el puerto',app.get('puerto') )
