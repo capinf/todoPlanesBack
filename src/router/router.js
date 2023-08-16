@@ -183,7 +183,7 @@ router.get('/usuarios', (req, res)=>{
 router.put('/bajausuario/:id', (req, res)=>{
     
      let id  = req.params.id;
-     let query=`UPDATE usuarios SET estado='B' WHERE username='${username}'`;
+     let query=`UPDATE usuarios SET estado='B' WHERE id='${id}'`;
      mysqlConeccion.query(query, (err, registros)=>{
         if(!err){
             res.json({
