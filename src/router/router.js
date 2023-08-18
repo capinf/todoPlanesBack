@@ -39,6 +39,14 @@ const storage = multer.diskStorage({
 
 ////////////login de usuarios //////////////
 router.post('/login', (req, res)=>{
+
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
+    
     const {username, password} =req.body
     if(username!=undefined && password!=undefined){
         mysqlConeccion.query('select u.username,  u.password,  u.email, u.apellido_nombre, u.rol from usuarios u where u.estado="A" AND username=?',[username], (err, rows)=>{
@@ -87,11 +95,19 @@ router.post('/login', (req, res)=>{
             mensaje:"Faltan completar datos"
         })
     }
+    connection.end();
 });
 
 //// registro ////
 
 router.post('/registro', async(req, res)=>{
+
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
     const {username, password, email, apellido_nombre, telefono} =req.body
     let hash = bcrypt.hashSync(password,10);
 
@@ -126,11 +142,19 @@ router.post('/registro', async(req, res)=>{
             });
         }
     });
+    connection.end();
 });
 
 /// reset password ///
 
 router.put('/resetpassword/:id', (req, res)=>{
+
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
     // asigna a id_usuario el valor que recibe por el parametro 
      let id  = req.params.id;
     // //asigna el valor que recibe  en el Body 
@@ -145,19 +169,26 @@ router.put('/resetpassword/:id', (req, res)=>{
             console.log(err)
         }
     })
-
+    connection.end();
     
 });
 
 //// Conexión Correcta ////
 
 router.get('/', (req, res)=>{
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
 
     const ok = {
         estado: 'Backend Conectado',
         mensaje: 'Bienvenido, todo está bien !!!'
     }
     res.json(ok);
+    connection.end();
 });
 
 
@@ -165,7 +196,12 @@ router.get('/', (req, res)=>{
 //// Usuarios ////
 
 router.get('/usuarios', (req, res)=>{
-
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
        
             mysqlConeccion.query('select * from usuarios', (err, registro)=>{
                 if(!err){
@@ -175,12 +211,19 @@ router.get('/usuarios', (req, res)=>{
                 }
             })
    
-    
+    connection.end();
 });
 
 //// Baja y Alta Usuario /// 
 
 router.put('/bajausuario/:id', (req, res)=>{
+
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
     
      let id  = req.params.id;
      let query=`UPDATE usuarios SET estado='B' WHERE id='${id}'`;
@@ -194,11 +237,16 @@ router.put('/bajausuario/:id', (req, res)=>{
             console.log(err)
         }
     })
-    
+    connection.end();
 });
 
 router.put('/altausuario/:id', (req, res)=>{
-    
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
      let id  = req.params.id;
      let query=`UPDATE usuarios SET estado='A' WHERE id='${id}'`;
      mysqlConeccion.query(query, (err, registros)=>{
@@ -211,12 +259,18 @@ router.put('/altausuario/:id', (req, res)=>{
             console.log(err)
         }
     })
-    
+    connection.end();
 });
 
 //// edit ////
 
 router.put('/edit_usuario/:id',(req, res)=>{
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
   
             let id = req.params.id;
             const rol =req.body.rol
@@ -228,7 +282,7 @@ router.put('/edit_usuario/:id',(req, res)=>{
                     console.log(err)
                 }
             })
-   
+            connection.end();
 });
 
 //
@@ -237,6 +291,12 @@ router.put('/edit_usuario/:id',(req, res)=>{
     /////////////////////////////////////////
 
     router.post('/cargarformulario', upload, (req, res)=>{
+        const connection = mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME
+        });
 
         console.log('console log en router js req body: ', req.body);
         console.log('console log en router js req body: ', req.file)
@@ -256,7 +316,7 @@ router.put('/edit_usuario/:id',(req, res)=>{
                         console.log(err)
                     }
                 })
-    
+                connection.end();
     });
 
     /////////////////////////////////////////
@@ -269,6 +329,14 @@ router.put('/edit_usuario/:id',(req, res)=>{
     /////////////////////////////////////////
 
     router.get('/autos', (req, res)=>{
+
+        const connection = mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME
+        });
+
         const searchTerm = req.query.search;
         mysqlConeccion.query(`SELECT * FROM formulario WHERE nombrePlan LIKE '%${searchTerm}%' AND estado = 'A'`, (err, registro)=>{
             if(!err){
@@ -278,11 +346,17 @@ router.put('/edit_usuario/:id',(req, res)=>{
             }
         })
 
-
+        connection.end();
 });
 
 router.get('/autosPremium', (req, res)=>{
 
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
        
     mysqlConeccion.query('SELECT * FROM todoplanesweb.formulario where rolform NOT IN ("normal") AND estado = "A"', (err, registro)=>{
         if(!err){
@@ -292,11 +366,17 @@ router.get('/autosPremium', (req, res)=>{
         }
     })
 
-
+    connection.end();
 });
 
 router.get('/autosNormal', (req, res)=>{
 
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
        
     mysqlConeccion.query('SELECT * FROM todoplanesweb.formulario where rolform NOT IN ("admin", "premium") AND estado = "A"', (err, registro)=>{
         if(!err){
@@ -305,7 +385,7 @@ router.get('/autosNormal', (req, res)=>{
             console.log(err)
         }
     })
-
+    connection.end();
 
 });
 
