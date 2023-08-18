@@ -15,7 +15,10 @@ const mysqlConeccion = mysql.createPool({
     timeout         : 60 * 60 * 1000  // en milisegundos
 });
 
-
+pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
+  });
 // You don't need to explicitly connect to the database with a pool
 
 // Export the connection pool
