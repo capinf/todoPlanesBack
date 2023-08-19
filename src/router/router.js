@@ -87,7 +87,7 @@ router.post('/login', (req, res)=>{
             mensaje:"Faltan completar datos"
         })
     }
-    mysqlConeccion.end();
+
 });
 
 //// registro ////
@@ -127,7 +127,7 @@ router.post('/registro', async(req, res)=>{
             });
         }
     });
-    mysqlConeccion.end();
+
 });
 
 /// reset password ///
@@ -147,8 +147,6 @@ router.put('/resetpassword/:id', (req, res)=>{
             console.log(err)
         }
     })
-    mysqlConeccion.end();
-    
 });
 
 //// Conexión Correcta ////
@@ -160,7 +158,6 @@ router.get('/', (req, res)=>{
         mensaje: 'Bienvenido, todo está bien !!!'
     }
     res.json(ok);
-    mysqlConeccion.end();
 });
 
 
@@ -176,8 +173,6 @@ router.get('/usuarios', (req, res)=>{
                     console.log(err)
                 }
             })
-   
-    mysqlConeccion.end();
 });
 
 //// Baja y Alta Usuario /// 
@@ -196,7 +191,6 @@ router.put('/bajausuario/:id', (req, res)=>{
             console.log(err)
         }
     })
-    mysqlConeccion.end();
 });
 
 router.put('/altausuario/:id', (req, res)=>{
@@ -212,7 +206,6 @@ router.put('/altausuario/:id', (req, res)=>{
             console.log(err)
         }
     })
-    mysqlConeccion.end();
 });
 
 //// edit ////
@@ -229,7 +222,6 @@ router.put('/edit_usuario/:id',(req, res)=>{
                     console.log(err)
                 }
             })
-            mysqlConeccion.end();
 });
 
 //
@@ -257,7 +249,6 @@ router.put('/edit_usuario/:id',(req, res)=>{
                         console.log(err)
                     }
                 })
-                mysqlConeccion.end();
     });
 
     /////////////////////////////////////////
@@ -279,8 +270,6 @@ router.put('/edit_usuario/:id',(req, res)=>{
                 console.log(err)
             }
         })
-
-        mysqlConeccion.end();
 });
 
 router.get('/autosPremium', (req, res)=>{
@@ -292,8 +281,6 @@ router.get('/autosPremium', (req, res)=>{
             console.log(err)
         }
     })
-
-    mysqlConeccion.end();
 });
 
 router.get('/autosNormal', (req, res)=>{
@@ -305,7 +292,7 @@ router.get('/autosNormal', (req, res)=>{
             console.log(err)
         }
     })
-    mysqlConeccion.end();
+
 
 });
 
