@@ -8,7 +8,7 @@ const mysqlConeccion = mysql.createPool({
     host:process.env.DB_HOST,
     user: process.env.DB_USER,
     password:process.env.DB_PASSWORD,
-    database:process.env.DB_NAME,
+    database:process.env.DB_NAME
     //queueLimit      : 0,
     //connectTimeout  : 60 * 60 * 1000, // en milisegundos
     //acquireTimeout  : 60 * 60 * 1000, // en milisegundos
