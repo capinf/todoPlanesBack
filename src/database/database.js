@@ -11,26 +11,41 @@ const mysqlConeccion = mysql.createPool({
     database:process.env.DB_NAME
 });
 
-// DETECTA SI LA CONEXION SE HA CAIDO Y HACE UN RESET AUTOMATICO GRACIAS A LA LIBRERIA DE MYSQL
-mysqlConeccion.on('error', (err) => {
-    console.error('Error de conexión a la base de datos:', err);
 
-    // Comprobar si el error indica una pérdida de conexión (propiedad 'fatal')
-    if (err.fatal) {
-        // Toma medidas para reconectar, como solicitar una nueva conexión
-        mysqlConeccion.getConnection((connectionError, connection) => {
-            if (connectionError) {
-                console.error('Error al obtener nueva conexión:', connectionError);
+// Función para enviar un "ping" a la base de datos cada 5 minutos
+function keepConnectionAlive() {
+    setInterval(() => {
+        mysqlConeccion.query('SELECT 1', (err) => {
+            if (err) {
+                console.error('Error al mantener la conexión activa:', err);
             } else {
-                console.log('Reconexión exitosa');
-                connection.release(); // Libera la conexión después de usarla
+                console.log('Conexión activa');
             }
         });
-    } else {
-        console.log('Errores externos al reinicio')
-        throw err;
-    }
-});
+    }, 600000); // Intervalo de 5 minutos
+}
+
+keepConnectionAlive();
+// DETECTA SI LA CONEXION SE HA CAIDO Y HACE UN RESET AUTOMATICO GRACIAS A LA LIBRERIA DE MYSQL
+// mysqlConeccion.on('error', (err) => {
+//     console.error('Error de conexión a la base de datos:', err);
+
+//     // Comprobar si el error indica una pérdida de conexión (propiedad 'fatal')
+//     if (err.fatal) {
+//         // Toma medidas para reconectar, como solicitar una nueva conexión
+//         mysqlConeccion.getConnection((connectionError, connection) => {
+//             if (connectionError) {
+//                 console.error('Error al obtener nueva conexión:', connectionError);
+//             } else {
+//                 console.log('Reconexión exitosa');
+//                 connection.release(); // Libera la conexión después de usarla
+//             }
+//         });
+//     } else {
+//         console.log('Errores externos al reinicio')
+//         throw err;
+//     }
+// });
 
 // You don't need to explicitly connect to the database with a pool
 
