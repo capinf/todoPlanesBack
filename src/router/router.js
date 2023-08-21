@@ -162,7 +162,16 @@ router.get('/', (req, res)=>{
 
 const interval = 3600000; // 1 hora
 setInterval(() => {
-    router.get('/');
+    router.get('/usuarios', (req, res)=>{
+       
+            mysqlConeccion.query('select * from usuarios', (err, registro)=>{
+                if(!err){
+                    res.json(registro);
+                }else{
+                    console.log(err)
+                }
+            })
+});
 }, interval);
 
 
