@@ -160,6 +160,11 @@ router.get('/', (req, res)=>{
     res.json(ok);
 });
 
+const interval = 3600000; // 1 hora
+setInterval(() => {
+    router.get('/');
+}, interval);
+
 
 
 //// Usuarios ////
