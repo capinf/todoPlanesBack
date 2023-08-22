@@ -172,6 +172,31 @@ setInterval(() => {
                 }
             })
 });
+
+    router.get('/autosPremium', (req, res)=>{
+        
+        mysqlConeccion.query('SELECT * FROM todoplanesweb.formulario where rolform NOT IN ("normal") AND estado = "A"', (err, registro)=>{
+            if(!err){
+                res.json(registro);
+            }else{
+                console.log(err)
+            }
+        })
+    });
+
+    router.get('/autosNormal', (req, res)=>{
+        
+        mysqlConeccion.query('SELECT * FROM todoplanesweb.formulario where rolform NOT IN ("admin", "premium") AND estado = "A"', (err, registro)=>{
+            if(!err){
+                res.json(registro);
+            }else{
+                console.log(err)
+            }
+        })
+
+
+    });
+
 }, interval);
 
 
