@@ -162,6 +162,16 @@ router.get('/', (req, res)=>{
 
 const interval = 600000; // 1 hora
 setInterval(() => {
+    
+    router.get('/', (req, res)=>{
+
+        const ok = {
+            estado: 'Backend Conectado',
+            mensaje: 'Bienvenido, todo está bien !!!'
+        }
+        res.json(ok);
+    });
+
     router.get('/usuarios', (req, res)=>{
        
             mysqlConeccion.query('select * from usuarios', (err, registro)=>{
