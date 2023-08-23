@@ -261,6 +261,17 @@ router.put('/altausuario/:id', (req, res)=>{
 
 //// edit ////
 
+router.get('/usuarios/:id', (req, res)=>{
+       
+    mysqlConeccion.query(`'select from usuarios where id='${id}'`, (err, registro)=>{
+        if(!err){
+            res.json(registro);
+        }else{
+            console.log(err)
+        }
+    })
+});
+
 router.put('/edit_usuario/:id',(req, res)=>{
   
             let id = req.params.id;
