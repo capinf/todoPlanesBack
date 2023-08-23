@@ -217,7 +217,7 @@ setInterval(() => {
 
 router.get('/usuarios', (req, res)=>{
        
-            mysqlConeccion.query('select * from usuarios', (err, registro)=>{
+            mysqlConeccion.query(`select * from usuarios where id='${id}'`, (err, registro)=>{
                 if(!err){
                     res.json(registro);
                 }else{
