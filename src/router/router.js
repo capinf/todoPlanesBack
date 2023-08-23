@@ -215,15 +215,21 @@ setInterval(() => {
 
 //// Usuarios ////
 
-router.get('/usuarios', (req, res)=>{
-       
-            mysqlConeccion.query(`select from usuarios where id='${id}'`, (err, registro)=>{
-                if(!err){
-                    res.json(registro);
-                }else{
-                    console.log(err)
-                }
-            })
+router.get('/usuarios/:id', (req, res) => {
+    const id = req.params.id;  // Obtener el ID de los parámetros de la URL
+
+    mysqlConeccion.query(`SELECT * FROM usuarios WHERE id = '${id}'`, (err, registro) => {
+        if (!err) {
+            if (registro.length > 0) {
+                res.json(registro[0]);  // Devolver el primer registro (si existe)
+            } else {
+                res.status(404).json({ message: 'Usuario no encontrado' });  // Si no hay registros
+            }
+        } else {
+            console.log(err);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    });
 });
 
 //// Baja y Alta Usuario /// 
