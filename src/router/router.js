@@ -263,7 +263,7 @@ router.put('/altausuario/:id', (req, res)=>{
 
 router.get('/usuarios/:id', (req, res)=>{
        
-    mysqlConeccion.query(`'select from usuarios where id='${id}'`, (err, registro)=>{
+    mysqlConeccion.query(`'select usuarios where id='${id}'`, (err, registro)=>{
         if(!err){
             res.json(registro);
         }else{
