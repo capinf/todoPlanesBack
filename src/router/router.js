@@ -211,6 +211,8 @@ setInterval(() => {
 
 
 
+
+
 //// Usuarios ////
 
 router.get('/usuarios', (req, res)=>{
@@ -271,6 +273,20 @@ router.put('/edit_usuario/:id',(req, res)=>{
                     console.log(err)
                 }
             })
+});
+
+/////eliminar publicacion/////////  
+router.delete('/eliminar_publicacion/:nombrePlan',(req, res)=>{
+  
+    let nombrePlan = req.params.nombrePlan;
+    console.log(req.body)
+    mysqlConeccion.query(`DELETE from formulario  WHERE nombrePlan='${nombrePlan}'`, (err, registros)=>{
+        if(!err){
+            res.send('El formulario que eliminamos es : '+nombrePlan+' ');
+        }else{
+            console.log(err)
+        }
+    })
 });
 
 //
