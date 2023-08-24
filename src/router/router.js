@@ -293,7 +293,7 @@ router.put('/edit_usuario/:id',(req, res)=>{
 });
 
 /////eliminar publicacion/////////  
-router.delete('/eliminar_publicacion/:nombrePlan',(req, res)=>{
+router.delete('/eliminar_publicacion/:id',(req, res)=>{
   
     let nombrePlan = req.params.nombrePlan;
     console.log(req.body)
