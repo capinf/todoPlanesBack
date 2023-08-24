@@ -316,7 +316,7 @@ router.delete('/eliminar_publicacion/:nombrePlan',(req, res)=>{
         console.log('console log en router js req body: ', req.body);
         console.log('console log en router js req body: ', req.file)
         const { nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, rolform } = req.body
-        const imgPath = req.file ? `uploads/${req.file.filename}` : 'img/imgDefault.png';
+        const imgPath = req.file ? `https://todoplanesback.onrender.com/uploads/${req.file.filename}` : 'img/imgDefault.png';
         console.log('el img path es ', imgPath)
     
                 let query=`INSERT INTO formulario (nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, imgPath, rolform, fecha) 
