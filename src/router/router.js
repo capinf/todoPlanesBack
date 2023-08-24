@@ -381,6 +381,16 @@ router.get('/autosNormal', (req, res)=>{
     /////////////////////////////////////////
     //GET DATOS TABLA FORMULARIOS DE PLANES//
     /////////////////////////////////////////
+    router.get('/formulario/:id', (req, res)=>{
+       
+    mysqlConeccion.query(`'select * from formulario where id='${id}'`, (err, registro)=>{
+        if(!err){
+            res.json(registro);
+        }else{
+            console.log(err)
+        }
+    })
+});
 
     /////////////////////////////////////////
          //VERIFICAR TOKEN//
