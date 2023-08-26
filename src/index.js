@@ -36,6 +36,7 @@ app.use(function (req, res, next) {
 
 //  rutas para mi aplicacion
 app.use(require('./router/router'))
+app.use('/uploads', express.static('src/uploads'));
 // inicia el servidor NODE
 app.listen(app.get('puerto'), ()=>{
     console.log('El servidor corriendo en el puerto',app.get('puerto') )

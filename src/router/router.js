@@ -87,6 +87,7 @@ router.post('/login', (req, res)=>{
             mensaje:"Faltan completar datos"
         })
     }
+
 });
 
 //// registro ////
@@ -126,6 +127,7 @@ router.post('/registro', async(req, res)=>{
             });
         }
     });
+
 });
 
 /// reset password ///
@@ -145,13 +147,32 @@ router.put('/resetpassword/:id', (req, res)=>{
             console.log(err)
         }
     })
-
-    
 });
-//// Usuarios ////
 
-router.get('/usuarios', (req, res)=>{
+//// Conexión Correcta ////
 
+router.get('/', (req, res)=>{
+
+    const ok = {
+        estado: 'Backend Conectado',
+        mensaje: 'Bienvenido, todo está bien !!!'
+    }
+    res.json(ok);
+});
+
+const interval = 600000; // 1 hora
+setInterval(() => {
+    
+    router.get('/', (req, res)=>{
+
+        const ok = {
+            estado: 'Backend Conectado',
+            mensaje: 'Bienvenido, todo está bien !!!'
+        }
+        res.json(ok);
+    });
+
+    router.get('/usuarios', (req, res)=>{
        
             mysqlConeccion.query('select * from usuarios', (err, registro)=>{
                 if(!err){
@@ -160,8 +181,55 @@ router.get('/usuarios', (req, res)=>{
                     console.log(err)
                 }
             })
-   
-    
+});
+
+    router.get('/autosPremium', (req, res)=>{
+        
+        mysqlConeccion.query('SELECT * FROM todoplanesweb.formulario where rolform NOT IN ("normal") AND estado = "A"', (err, registro)=>{
+            if(!err){
+                res.json(registro);
+            }else{
+                console.log(err)
+            }
+        })
+    });
+
+    router.get('/autosNormal', (req, res)=>{
+        
+        mysqlConeccion.query('SELECT * FROM todoplanesweb.formulario where rolform NOT IN ("admin", "premium") AND estado = "A"', (err, registro)=>{
+            if(!err){
+                res.json(registro);
+            }else{
+                console.log(err)
+            }
+        })
+
+
+    });
+
+}, interval);
+
+
+
+
+
+//// Usuarios ////
+
+router.get('/usuarios/:id', (req, res) => {
+    const id = req.params.id;  // Obtener el ID de los parámetros de la URL
+
+    mysqlConeccion.query(`SELECT * FROM usuarios WHERE id = '${id}'`, (err, registro) => {
+        if (!err) {
+            if (registro.length > 0) {
+                res.json(registro[0]);  // Devolver el primer registro (si existe)
+            } else {
+                res.status(404).json({ message: 'Usuario no encontrado' });  // Si no hay registros
+            }
+        } else {
+            console.log(err);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    });
 });
 
 //// Baja y Alta Usuario /// 
@@ -180,11 +248,9 @@ router.put('/bajausuario/:id', (req, res)=>{
             console.log(err)
         }
     })
-    
 });
 
 router.put('/altausuario/:id', (req, res)=>{
-    
      let id  = req.params.id;
      let query=`UPDATE usuarios SET estado='A' WHERE id='${id}'`;
      mysqlConeccion.query(query, (err, registros)=>{
@@ -197,10 +263,20 @@ router.put('/altausuario/:id', (req, res)=>{
             console.log(err)
         }
     })
-    
 });
 
 //// edit ////
+
+router.get('/usuarios/:id', (req, res)=>{
+       
+    mysqlConeccion.query(`'select * from usuarios where id='${id}'`, (err, registro)=>{
+        if(!err){
+            res.json(registro);
+        }else{
+            console.log(err)
+        }
+    })
+});
 
 router.put('/edit_usuario/:id',(req, res)=>{
   
@@ -214,7 +290,20 @@ router.put('/edit_usuario/:id',(req, res)=>{
                     console.log(err)
                 }
             })
-   
+});
+
+/////eliminar publicacion/////////  
+router.delete('/eliminar_publicacion/:id',(req, res)=>{
+  
+    let nombrePlan = req.params.nombrePlan;
+    console.log(req.body)
+    mysqlConeccion.query(`DELETE from formulario  WHERE nombrePlan='${nombrePlan}'`, (err, registros)=>{
+        if(!err){
+            res.send('El formulario que eliminamos es : '+nombrePlan+' ');
+        }else{
+            console.log(err)
+        }
+    })
 });
 
 //
@@ -227,7 +316,7 @@ router.put('/edit_usuario/:id',(req, res)=>{
         console.log('console log en router js req body: ', req.body);
         console.log('console log en router js req body: ', req.file)
         const { nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, rolform } = req.body
-        const imgPath = req.file ? `uploads/${req.file.filename}` : 'img/imgDefault.png';
+        const imgPath = req.file ? `https://todoplanesback.onrender.com/uploads/${req.file.filename}` : 'img/imgDefault.png';
         console.log('el img path es ', imgPath)
     
                 let query=`INSERT INTO formulario (nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, imgPath, rolform, fecha) 
@@ -242,7 +331,6 @@ router.put('/edit_usuario/:id',(req, res)=>{
                         console.log(err)
                     }
                 })
-    
     });
 
     /////////////////////////////////////////
@@ -255,6 +343,7 @@ router.put('/edit_usuario/:id',(req, res)=>{
     /////////////////////////////////////////
 
     router.get('/autos', (req, res)=>{
+
         const searchTerm = req.query.search;
         mysqlConeccion.query(`SELECT * FROM formulario WHERE nombrePlan LIKE '%${searchTerm}%' AND estado = 'A'`, (err, registro)=>{
             if(!err){
@@ -263,12 +352,9 @@ router.put('/edit_usuario/:id',(req, res)=>{
                 console.log(err)
             }
         })
-
-
 });
 
 router.get('/autosPremium', (req, res)=>{
-
        
     mysqlConeccion.query('SELECT * FROM todoplanesweb.formulario where rolform NOT IN ("normal") AND estado = "A"', (err, registro)=>{
         if(!err){
@@ -277,12 +363,9 @@ router.get('/autosPremium', (req, res)=>{
             console.log(err)
         }
     })
-
-
 });
 
 router.get('/autosNormal', (req, res)=>{
-
        
     mysqlConeccion.query('SELECT * FROM todoplanesweb.formulario where rolform NOT IN ("admin", "premium") AND estado = "A"', (err, registro)=>{
         if(!err){
@@ -298,6 +381,16 @@ router.get('/autosNormal', (req, res)=>{
     /////////////////////////////////////////
     //GET DATOS TABLA FORMULARIOS DE PLANES//
     /////////////////////////////////////////
+    router.get('/formulario/:id', (req, res)=>{
+       
+    mysqlConeccion.query(`'select * from formulario where id='${id}'`, (err, registro)=>{
+        if(!err){
+            res.json(registro);
+        }else{
+            console.log(err)
+        }
+    })
+});
 
     /////////////////////////////////////////
          //VERIFICAR TOKEN//
