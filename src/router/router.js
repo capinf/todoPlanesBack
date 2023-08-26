@@ -211,17 +211,25 @@ setInterval(() => {
 
 
 
+
+
 //// Usuarios ////
 
-router.get('/usuarios', (req, res)=>{
-       
-            mysqlConeccion.query('select * from usuarios', (err, registro)=>{
-                if(!err){
-                    res.json(registro);
-                }else{
-                    console.log(err)
-                }
-            })
+router.get('/usuarios/:id', (req, res) => {
+    const id = req.params.id;  // Obtener el ID de los parámetros de la URL
+
+    mysqlConeccion.query(`SELECT * FROM usuarios WHERE id = '${id}'`, (err, registro) => {
+        if (!err) {
+            if (registro.length > 0) {
+                res.json(registro[0]);  // Devolver el primer registro (si existe)
+            } else {
+                res.status(404).json({ message: 'Usuario no encontrado' });  // Si no hay registros
+            }
+        } else {
+            console.log(err);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    });
 });
 
 //// Baja y Alta Usuario /// 
@@ -259,6 +267,17 @@ router.put('/altausuario/:id', (req, res)=>{
 
 //// edit ////
 
+router.get('/usuarios/:id', (req, res)=>{
+       
+    mysqlConeccion.query(`'select * from usuarios where id='${id}'`, (err, registro)=>{
+        if(!err){
+            res.json(registro);
+        }else{
+            console.log(err)
+        }
+    })
+});
+
 router.put('/edit_usuario/:id',(req, res)=>{
   
             let id = req.params.id;
@@ -273,6 +292,20 @@ router.put('/edit_usuario/:id',(req, res)=>{
             })
 });
 
+/////eliminar publicacion/////////  
+router.delete('/eliminar_publicacion/:id',(req, res)=>{
+  
+    let nombrePlan = req.params.nombrePlan;
+    console.log(req.body)
+    mysqlConeccion.query(`DELETE from formulario  WHERE nombrePlan='${nombrePlan}'`, (err, registros)=>{
+        if(!err){
+            res.send('El formulario que eliminamos es : '+nombrePlan+' ');
+        }else{
+            console.log(err)
+        }
+    })
+});
+
 //
     /////////////////////////////////////////
     //INSERTAR DATOS DEL FORMULARIO DE PLANES//
@@ -283,7 +316,7 @@ router.put('/edit_usuario/:id',(req, res)=>{
         console.log('console log en router js req body: ', req.body);
         console.log('console log en router js req body: ', req.file)
         const { nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, rolform } = req.body
-        const imgPath = req.file ? `uploads/${req.file.filename}` : 'img/imgDefault.png';
+        const imgPath = req.file ? `https://todoplanesback.onrender.com/uploads/${req.file.filename}` : 'img/imgDefault.png';
         console.log('el img path es ', imgPath)
     
                 let query=`INSERT INTO formulario (nombrePlan, tipoPlan, precio, cantidadCuotas, adjudicado, anioInicio, localidad, telefono, imgPath, rolform, fecha) 
@@ -348,6 +381,16 @@ router.get('/autosNormal', (req, res)=>{
     /////////////////////////////////////////
     //GET DATOS TABLA FORMULARIOS DE PLANES//
     /////////////////////////////////////////
+    router.get('/formulario/:id', (req, res)=>{
+       
+    mysqlConeccion.query(`'select * from formulario where id='${id}'`, (err, registro)=>{
+        if(!err){
+            res.json(registro);
+        }else{
+            console.log(err)
+        }
+    })
+});
 
     /////////////////////////////////////////
          //VERIFICAR TOKEN//
