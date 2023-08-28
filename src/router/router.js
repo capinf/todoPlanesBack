@@ -292,19 +292,7 @@ router.put('/edit_usuario/:id',(req, res)=>{
             })
 });
 
-/////eliminar publicacion/////////  
-router.delete('/eliminar_publicacion/:id',(req, res)=>{
-  
-    let nombrePlan = req.params.nombrePlan;
-    console.log(req.body)
-    mysqlConeccion.query(`DELETE from formulario  WHERE nombrePlan='${nombrePlan}'`, (err, registros)=>{
-        if(!err){
-            res.send('El formulario que eliminamos es : '+nombrePlan+' ');
-        }else{
-            console.log(err)
-        }
-    })
-});
+
 
 //
     /////////////////////////////////////////
@@ -381,11 +369,25 @@ router.get('/autosNormal', (req, res)=>{
     /////////////////////////////////////////
     //GET DATOS TABLA FORMULARIOS DE PLANES//
     /////////////////////////////////////////
-    router.get('/formulario/:id', (req, res)=>{
+    router.get('/formulario', (req, res)=>{
        
-    mysqlConeccion.query(`'select * from formulario where id='${id}'`, (err, registro)=>{
+    mysqlConeccion.query(`'select * from formulario'`, (err, registro)=>{
         if(!err){
             res.json(registro);
+        }else{
+            console.log(err)
+        }
+    })
+});
+
+/////eliminar publicacion/////////  
+router.delete('/eliminar_publicacion/:id',(req, res)=>{
+  
+    let idFormulario = req.params.idFormulario;
+    console.log(req.body)
+    mysqlConeccion.query(`DELETE from formulario  WHERE idFormulario='${idFormulario}'`, (err, registros)=>{
+        if(!err){
+            res.send('El formulario que eliminamos es : '+nombrePlan+' ');
         }else{
             console.log(err)
         }
