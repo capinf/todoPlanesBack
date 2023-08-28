@@ -371,7 +371,7 @@ router.get('/autosNormal', (req, res)=>{
     /////////////////////////////////////////
     router.get('/formulario', (req, res)=>{
        
-    mysqlConeccion.query(`'select * from formulario'`, (err, registro)=>{
+    mysqlConeccion.query(`select * from formulario`, (err, registro)=>{
         if(!err){
             res.json(registro);
         }else{
