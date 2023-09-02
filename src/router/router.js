@@ -371,7 +371,7 @@ router.get('/autosNormal', (req, res)=>{
     /////////////////////////////////////////
     router.get('/formulario', (req, res)=>{
        
-    mysqlConeccion.query('select * from todoplanesweb.formulario', (err, registro)=>{
+    mysqlConeccion.query(`select * from todoplanesweb.formulario`, (err, registro)=>{
         if(!err){
             res.json(registro);
         }else{
@@ -380,19 +380,33 @@ router.get('/autosNormal', (req, res)=>{
     })
 });
 
-/////eliminar publicacion/////////  
-router.delete('/eliminar_publicacion/:id',(req, res)=>{
-  
-    let idFormulario = req.params.idFormulario;
+/////eliminar publicacion///////// 
+router.delete('/eliminar_publicacion/:id', (req, res) => {
+    let idFormulario = req.params.id; // Cambia 'idFormulario' a 'id'
     console.log(req.body)
-    mysqlConeccion.query(`DELETE from formulario  WHERE idFormulario='${idFormulario}'`, (err, registros)=>{
-        if(!err){
-            res.send('El formulario que eliminamos es : '+nombrePlan+' ');
-        }else{
-            console.log(err)
+    mysqlConeccion.query(`DELETE from formulario  WHERE idFormulario='${idFormulario}'`, (err, registros) => {
+            if(!err){
+                res.json({
+                    status: true,
+                    mensaje:"Se elimino correctamente el plan"
+                });
+        } else {
+            console.log(err);
         }
-    })
-});
+    });
+}); 
+// router.delete('/eliminar_publicacion/:id',(req, res)=>{
+  
+//     let idFormulario = req.params.idFormulario;
+//     console.log(req.body)
+//     mysqlConeccion.query(`DELETE from formulario  WHERE idFormulario='${idFormulario}'`, (err, registros)=>{
+//         if(!err){
+//             res.send('El formulario que eliminamos es : '+nombrePlan+' ');
+//         }else{
+//             console.log(err)
+//         }
+//     })
+// });
 
     /////////////////////////////////////////
          //VERIFICAR TOKEN//
